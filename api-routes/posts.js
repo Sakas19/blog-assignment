@@ -1,13 +1,34 @@
-export const getPosts = () => {
-  //Handle get all posts
+import { supabase } from "../lib/supabaseClient";
+export const postCacheKey = "/posts/";
+
+export const getPosts = async() => {
+  const { data, error } = await supabase
+  .from('posts')
+  .select() 
+  return { data, error };
 };
 
-export const addPost = () => {
-  //Handle add post here
+export const getPost = async() => {
+ const { data, error } = await supabase
+ .from('posts')
+ .select("*") 
+ .single()
+.eq("slug",slug);
+
+return {data,error}
 };
 
-export const removePost = () => {
-  //Handle remove post here
+export const addPost = async() => {
+  const { data, error } = await supabase
+  .from('posts')
+  .select()
+};
+
+export const removePost = async() => {
+  const { error } = await supabase
+  .from('posts')
+  .delete()
+  .eq('id', )
 };
 
 export const editPost = () => {

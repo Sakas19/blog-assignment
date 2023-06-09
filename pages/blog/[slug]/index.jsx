@@ -6,6 +6,9 @@ import Button from "@components/button";
 import Heading from "@components/heading";
 import BlogImageBanner from "@components/blog-image-banner";
 
+import useSWR from "swr";
+import { getPost, postsCacheKey } from "@/api-routes/posts";
+
 const post = {
   id: "1234",
   title: "Why you should use a react framework",
@@ -30,6 +33,9 @@ export default function BlogPost() {
 
   /* Use this slug to fetch the post from the database */
   const { slug } = router.query;
+
+  const  { data,error } = useSWR(slug ? `${postsCacheKey}${slug}` : null , () => getPost({ slug }));
+  //console.log({ data,error });
 
   const handleDeletePost = () => {
     console.log({ id: post.id });
