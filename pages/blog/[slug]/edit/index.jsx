@@ -1,4 +1,10 @@
 import { useRouter } from "next/router";
+import useSWRMutation from "swr/mutation";
+import useSWR from "swr";
+import { createSlug } from "@/utils/createSlug";
+import { editPost } from "../../../../api-routes/posts";
+import { postCacheKey } from "../../../../api-routes/posts";
+
 import BlogEditor from "../../../../components/blog-editor";
 
 const mockData = {
@@ -7,14 +13,41 @@ const mockData = {
   image:
     "https://media.wired.com/photos/598e35fb99d76447c4eb1f28/16:9/w_2123,h_1194,c_limit/phonepicutres-TA.jpg",
 };
+
 export default function EditBlogPost() {
   const router = useRouter();
-  /* Use this slug to fetch the post from the database */
   const { slug } = router.query;
 
-  const handleOnSubmit = ({ editorContent, titleInput, image }) => {
-    console.log({ editorContent, titleInput, image, slug });
+  const { data: post = {}, error, isLoading } = useSWR(
+    slug ? `${postCacheKey}/${slug}` : null,
+    () => getPost({})
+  );
+
+  const { trigger: editPostTrigger } = useSWRMutation(
+    `${postCacheKey}/${slug}`,
+    editPost
+  );
+
+  const handleOnSubmit = async ({ editorContent, titleInput }) => {
+    const updatedSlug = createSlug(titleInput);
+
+    const updatedPost = {
+      id: post.id,
+      body: editorContent,
+      title: titleInput,
+    };
+
+    console.log(updatedPost);
+
+    const { data, error } = await editPostTrigger(updatedPost);
+    if (!error) {
+      router.push(`/blog/${slug}`);
+    }
   };
+
+  if (isLoading) {
+    return "...Loading";
+  }
 
   return (
     <BlogEditor

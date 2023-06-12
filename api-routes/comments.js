@@ -1,9 +1,20 @@
-export const getComments = () => {
-  //Handle get all comments
+import { SupabaseAuthClient } from "@supabase/supabase-js/dist/module/lib/SupabaseAuthClient";
+export const commentCacheKey = "/comments/";
+
+export const getComments = async() => {
+  const { data, error } = await supabase
+  .from('comments')
+  .select() 
+  return { data, error };
 };
 
 export const addComment = () => {
-  //Handle add comment here
+  // const { data, error } = await supabase
+  // .from('comments')
+  // .insert([
+  //   { some_column: 'someValue', other_column: 'otherValue' },
+  // ])
+
 };
 
 export const removeComment = () => {

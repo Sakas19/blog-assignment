@@ -13,24 +13,37 @@ export const getPost = async() => {
  .from('posts')
  .select("*") 
  .single()
-.eq("slug",slug);
+ .eq("slug",slug);
 
 return {data,error}
 };
 
-export const addPost = async() => {
+export const addPost = async(_, { arg: newPost}) => {
   const { data, error } = await supabase
   .from('posts')
+  .insert(newPost)
   .select()
+  .single()
+  console.log(data,error)
+
+  return { data, error}
 };
 
 export const removePost = async() => {
   const { error } = await supabase
   .from('posts')
   .delete()
-  .eq('id', )
+  .eq('id', id)
 };
 
-export const editPost = () => {
-  //Handle edit post here
+export const editPost = async(_, { arg:updatedPost}) => {
+ const { data, error } = await supabase
+  .from('posts')
+  .update(updatedPost)
+  .eq("id",updatedPost.id)
+  .select()
+  .single();
+
+return { data, error };
 };
+
