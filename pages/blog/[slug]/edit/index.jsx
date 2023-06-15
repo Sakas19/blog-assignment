@@ -18,7 +18,11 @@ export default function EditBlogPost() {
   const router = useRouter();
   const { slug } = router.query;
 
-  const { data: post = {}, error, isLoading } = useSWR(
+  const { 
+    data: { data: post = {} } = {},
+    error, 
+    isLoading, 
+  } = useSWR(
     slug ? `${postCacheKey}/${slug}` : null,
     () => getPost({})
   );
@@ -28,18 +32,22 @@ export default function EditBlogPost() {
     editPost
   );
 
-  const handleOnSubmit = async ({ editorContent, titleInput }) => {
+  const handleOnSubmit = async ({ editorContent, titleInput, image }) => {
     const updatedSlug = createSlug(titleInput);
 
     const updatedPost = {
       id: post.id,
       body: editorContent,
       title: titleInput,
+      slug: updatedSlug,
+      image,
     };
 
     console.log(updatedPost);
 
     const { data, error } = await editPostTrigger(updatedPost);
+      //console.log({ data, error})
+
     if (!error) {
       router.push(`/blog/${slug}`);
     }

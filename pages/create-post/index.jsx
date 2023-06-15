@@ -21,6 +21,7 @@ export default function CreatePost() {
       slug,
       title: titleInput,
       body: editorContent,
+      image,
     }
     
      const { data, error } = await addPostTrigger(newPost);
