@@ -9,7 +9,7 @@ export const getPosts = async() => {
   return { data, error };
 };
 
-export const getPost = async() => {
+export const getPost = async({ slug }) => {
  const { data, error } = await supabase
  .from('posts')
  .select("*") 
@@ -20,22 +20,21 @@ return {data,error}
 };
 
 export const addPost = async(_, { arg: newPost}) => {
-  let image = ""
-
+  let image = "";
+console.log(newPost.image)
   if(newPost?.image) {
     const { publicUrl, error } = await uploadImage(newPost?.image);
-
+    console.log(error)
     if (!error) {
       image = publicUrl;
-    }
-    //create function that takes in the uploaded image from the client 
-    //upload it yo our bucket
-    //get the public url and return it
-  
+    }  
   }
+
+  console.log(image)
+
     const { data, error } = await supabase
    .from('posts')
-   .insert({...newPost, Image})
+   .insert({...newPost, image})
    .select()
    .single()
   
@@ -43,11 +42,13 @@ export const addPost = async(_, { arg: newPost}) => {
    return { data, error}
 };
 
-export const removePost = async() => {
+export const removePost = async(_,{arg:id}) => {
   const { error } = await supabase
   .from('posts')
   .delete()
   .eq('id', id)
+
+  return {error}
 };
 
 export const editPost = async(_, { arg:updatedPost}) => {

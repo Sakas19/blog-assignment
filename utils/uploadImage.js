@@ -1,7 +1,7 @@
 import { supabase } from "../lib/supabaseClient";
 
 export const uploadImage = async (file) => {
-  console.log(file);
+  
 
   const fullFileName = file.name.split(".");
   const fileName = fullFileName[0];
@@ -9,6 +9,7 @@ export const uploadImage = async (file) => {
 
   const filePath = `${fileName}-${Math.random()}.${fileExt}`;
 
+  
   const { data, error } = await supabase.storage
     .from("images")
     .upload(filePath, file, {
@@ -20,14 +21,18 @@ export const uploadImage = async (file) => {
     return { error };
   }
 
+
+  
   const {
-    data: { PublicUrl },
+    data: { publicUrl },
     error: PublicUrlError,
   } = await supabase.storage.from("images").getPublicUrl(data.path);
 
+
+
   return {
     error: false,
-    publicUrl: PublicUrl,
+    publicUrl,
   };
 };
 

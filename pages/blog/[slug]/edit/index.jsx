@@ -2,17 +2,10 @@ import { useRouter } from "next/router";
 import useSWRMutation from "swr/mutation";
 import useSWR from "swr";
 import { createSlug } from "@/utils/createSlug";
-import { editPost } from "../../../../api-routes/posts";
-import { postCacheKey } from "../../../../api-routes/posts";
+import { editPost,postCacheKey,getPost } from "../../../../api-routes/posts";
 
 import BlogEditor from "../../../../components/blog-editor";
 
-const mockData = {
-  title: "Community-Messaging Fit",
-  body: "<p>This is a good community fit!</p>",
-  image:
-    "https://media.wired.com/photos/598e35fb99d76447c4eb1f28/16:9/w_2123,h_1194,c_limit/phonepicutres-TA.jpg",
-};
 
 export default function EditBlogPost() {
   const router = useRouter();
@@ -24,10 +17,10 @@ export default function EditBlogPost() {
     isLoading, 
   } = useSWR(
     slug ? `${postCacheKey}/${slug}` : null,
-    () => getPost({})
+    () => getPost({slug})
   );
 
-  const { trigger: editPostTrigger } = useSWRMutation(
+  const { trigger: editPostTrigger, isMutating } = useSWRMutation(
     `${postCacheKey}/${slug}`,
     editPost
   );
@@ -43,7 +36,7 @@ export default function EditBlogPost() {
       image,
     };
 
-    console.log(updatedPost);
+    //console.log(updatedPost);
 
     const { data, error } = await editPostTrigger(updatedPost);
       //console.log({ data, error})
@@ -60,12 +53,14 @@ export default function EditBlogPost() {
   return (
     <BlogEditor
       heading="Edit blog post"
-      title={mockData.title}
-      src={mockData.image}
-      alt={mockData.title}
-      content={mockData.body}
+      title={post.title}
+      src={post.image}
+      alt={post.title}
+      content={post.body}
       buttonText="Save changes"
       onSubmit={handleOnSubmit}
     />
   );
 }
+
+
