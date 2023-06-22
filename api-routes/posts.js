@@ -1,6 +1,6 @@
 import { supabase } from "../lib/supabaseClient";
 import { uploadImage } from "../utils/uploadImage";
-export const postCacheKey = "/posts/";
+export const postsCacheKey = "/posts/";
 
 export const getPosts = async() => {
   const { data, error } = await supabase

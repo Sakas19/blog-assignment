@@ -19,6 +19,7 @@ export default function BlogPost() {
     "postCacheKey",
     removePost
   );
+
   /* Use this slug to fetch the post from the database */
   const { slug } = router.query;
 
