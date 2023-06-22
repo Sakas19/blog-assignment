@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import useSWRMutation from "swr/mutation";
 import useSWR from "swr";
 import { createSlug } from "@/utils/createSlug";
-import { editPost,postCacheKey,getPost } from "../../../../api-routes/posts";
+import { editPost,getPost, postsCacheKey } from "../../../../api-routes/posts";
 
 import BlogEditor from "../../../../components/blog-editor";
 
@@ -16,12 +16,12 @@ export default function EditBlogPost() {
     error, 
     isLoading, 
   } = useSWR(
-    slug ? `${postCacheKey}/${slug}` : null,
+    slug ? `${postsCacheKey}/${slug}` : null,
     () => getPost({slug})
   );
 
   const { trigger: editPostTrigger, isMutating } = useSWRMutation(
-    `${postCacheKey}/${slug}`,
+    `${postsCacheKey}/${slug}`,
     editPost
   );
 

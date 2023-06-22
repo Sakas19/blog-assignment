@@ -2,10 +2,10 @@ import Link from "next/link";
 import styles from "./blog.module.css";
 import Heading from "@components/heading";
 import useSWR from "swr"
-import { getPosts, postCacheKey } from "../../api-routes/posts";
+import { getPosts, postsCacheKey } from "../../api-routes/posts";
 
 export default function Blog() {
-  const { data,error } = useSWR(postCacheKey,getPosts)
+  const { data,error } = useSWR(postsCacheKey,getPosts)
   const {data: posts = []} = data || {}
   //console.log(posts)
   
