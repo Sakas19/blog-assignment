@@ -9,7 +9,7 @@ export default function About() {
       <p>Welcome to Feel Good Stories!</p>
       <p>
         At Feel Good Stories, we believe in the power of storytelling to inspire,
-        uplift, and bring joy to people's lives. Our blog is a sanctuary for those
+        uplift, and bring joy to people lives. Our blog is a sanctuary for those
         seeking a momentary escape from the challenges of everyday life, where they
         can immerse themselves in a world of inspiring and uplifting short stories.
       </p>
